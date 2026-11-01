@@ -1,0 +1,107 @@
+COMFY READER KOKORO SETUP AND UPDATES
+Updated October 31, 2026
+
+CHOOSE HOW TO LISTEN
+Browser voice works without a separate speech-service installation. Some browser
+voices use a network service. The floating website toolbar uses browser speech.
+The dedicated Comfy reader can use optional local Kokoro for prepared audio,
+word highlighting and seeking. Kokoro is installed separately from the extension.
+
+MISAKI PRONUNCIATION SUPPORT
+The recommended Comfy Kokoro Windows package includes Misaki. It turns written
+English into speech sounds using sentence context before Kokoro generates audio.
+Misaki runs inside Kokoro's worker; do not install or start a second service.
+Comfy's Reader profile substitutions run first. Use them for abbreviations,
+symbols and personal pronunciation preferences. Avoid broad read/reed/red rules
+that remove the context Misaki needs. Pronunciation is not perfect; complex
+sentences and ambiguous words can still need a targeted profile rule.
+The Comfy worker also includes targeted past/present handling for "misread".
+
+FIRST INSTALLATION ON WINDOWS
+1. Use a trusted Comfy Kokoro Windows testing package. Extract the complete ZIP
+   before running Setup.cmd. Do not run a fresh installer over an existing install.
+2. Follow its installer, including eSpeak NG when requested. The MSI installs
+   eSpeak NG, not Kokoro or Misaki. Keep eSpeak in its own installation folder;
+   the package creates a separate Kokoro folder and private Python environment.
+3. Setup needs internet for Python dependencies and the English language model,
+   several minutes, and several GB of free space. Reading text is not part of
+   these downloads. Once installed, local Kokoro/Misaki synthesis can work offline.
+4. Configure the service to allow your exact Comfy extension origin, shown in
+   Comfy's Kokoro setup instructions. The Web Store and an unpacked development
+   extension can have different IDs. Never allow all origins. Moving an unpacked
+   extension can change its ID.
+5. Start Kokoro using the package's Start Kokoro.cmd or documented launcher.
+   Enable its optional startup task if you want it available after signing in.
+   Installing eSpeak NG alone does not start Kokoro at sign-in.
+
+CONNECT FROM COMFY
+1. Open Speech setup. Choose Automatic or Local Kokoro and select a voice.
+2. Choose Test voice, the first test button. If Chrome asks, allow access to the
+   selected local host. Stop test is enabled during a test and cancels preparation
+   or playback. Closing Speech setup also stops the test.
+3. Local access shows Not allowed or Allowed. Allow access appears only when
+   permission is missing. This is Chrome permission, not a service-start button.
+   The separate Kokoro status shows Not checked, Connected, busy or Unavailable.
+   Permission can be allowed even when Kokoro is not running.
+4. Expand Connection settings only to change the address, use Test connection,
+   or open Kokoro setup instructions below that button. The default address is
+   http://localhost:20071/speech. Only HTTP localhost or 127.0.0.1 with /speech
+   is accepted. Chrome host permission applies to that host, not a single port.
+5. Save settings applies the choice to future readings. These settings do not
+   change Reader profiles. Automatic uses browser speech when Kokoro is
+   unavailable if fallback is enabled. Disable fallback to require Kokoro.
+   Selecting Browser voice hides the Kokoro settings.
+
+START AND CHECK THE SERVICE
+In your Kokoro folder, a local installation with start-kokoro.ps1 can be started
+from PowerShell with:
+  & .\start-kokoro.ps1
+Windows testing packages may instead provide Start Kokoro.cmd, Stop Kokoro.cmd
+and Manage-Kokoro.ps1. Use the controls supplied with your installation.
+To check the default local service in PowerShell:
+  Invoke-RestMethod -Uri 'http://127.0.0.1:20071/health' -TimeoutSec 10
+Expect ok: True and engine: Kokoro. Adjust the port if you configured another.
+A healthy service does not by itself prove that a particular voice or Misaki
+installation is working; use Test voice and the pronunciation samples below.
+
+UPDATE AN EXISTING INSTALLATION
+Updating Comfy in Chrome does not update Kokoro, Misaki or the English model.
+Use the separate complete Comfy Kokoro Misaki revision 2 updater (or a newer
+compatible updater), not the older October 23 alignment-only updater.
+1. Stop your Kokoro installation using its normal controls.
+2. Extract the complete update ZIP; do not copy only speech_worker.py.
+3. Open PowerShell in the extracted update folder and run:
+   .\Update-Kokoro-Misaki.ps1 -InstallRoot "C:\path\to\ComfyReaderTest"
+   The install root may instead be the Kokoro folder, such as C:\ComfyReader\Kokoro.
+4. Restart Kokoro using its normal launcher. In Comfy, choose Test voice.
+5. Select Local Kokoro and turn off browser fallback while testing a passage
+   so a browser voice cannot mask an unavailable service. Your voice and profile preferences should remain.
+The updater preserves settings, backs up the recognized worker and launcher,
+and refuses unknown/customized workers or an occupied service port. Review its
+README-MISAKI.txt before proceeding. Do not force it past an unrecognized setup.
+The current updater uses a private Python 3.12 runtime in misaki-runtime and
+dependencies in misaki-packages; it retains the previous runtime for rollback.
+This runtime detail describes the supplied Windows package, not all Kokoro setups.
+
+TRY THESE SENTENCES WITH LOCAL KOKORO
+Yesterday, I misread the instructions. Today, I often misread small print.
+I have read the record. I want to read it again and record my answer.
+We live near the theater. We watched a live concert.
+The wind was strong. Please wind the clock.
+If a profile already replaces one of these words, temporarily disable only the
+conflicting rule while testing context. You do not need to remove your rules.
+
+TROUBLESHOOTING AND PRIVACY
+Not allowed: choose Allow access or Test voice and approve Chrome's prompt.
+Unavailable: start the service and check the address, port and exact allowed origin.
+Busy: wait or cancel the recording that is being prepared. Supported Comfy
+services accept job cancellation; the next test can take time to initialize.
+Speech failure: update the service as well as Comfy; keep your voice and profiles.
+Connection works but pronunciation does not: confirm Local Kokoro is selected,
+check for overriding profile rules, and use the matching service updater.
+Kokoro/Misaki process spoken text on this computer in the recommended package.
+The separate service may log data according to its configuration. Browser voices
+may use network services; Comfy cannot promise that every browser voice is offline.
+Keep installed dependency licenses and notices when sharing the service package.
+
+Support: comfyreader@proton.me
