@@ -1,0 +1,12 @@
+:root { color-scheme: light; font-family: "Atkinson Hyperlegible", Arial, sans-serif; color: #302d27; background: #f3eee5; }
+* { box-sizing: border-box; }
+body { margin: 0 auto; max-width: 1000px; padding: 24px; font-size: 20px; line-height: 1.7; }
+nav { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-bottom: 28px; }
+a { color: #236c73; text-underline-offset: 0.15em; }
+main { padding: clamp(16px, 4vw, 48px); border: 1px solid #dcd0ba; border-radius: 16px; background: #fffaf0; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; }
+h3 { margin-top: 1.5em; }
+figure { margin: 1.5em 0; }
+img { display: block; max-width: 100%; height: auto; margin-inline: auto; }
+figcaption { margin-top: 0.6em; font-size: 0.85em; }
