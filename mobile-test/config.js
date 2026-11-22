@@ -1,0 +1,1 @@
+window.COMFY_MOBILE_CONFIG={"endpoint": "https://chkdwfcmskkfxqmzgqwf.supabase.co", "publicKey": "sb_publishable_BUIMdponWXKZOSbZYlld2w_NUSuUIKm", "bucket": "comfy-mobile-private", "object": "reader-v0.1.0.json"};
