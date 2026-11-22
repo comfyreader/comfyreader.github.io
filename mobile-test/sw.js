@@ -1,7 +1,7 @@
 "use strict";
 importScripts("./share-store.js");
-const cacheName="comfy-mobile-shell-0.1.1";
-const shell=["./","./index.html","./config.js","./mobile.js","./share-store.js","./shell.css","./manifest.webmanifest","./icon.svg"];
+const cacheName="comfy-mobile-shell-0.1.2";
+const shell=["./","./index.html","./config.js","./mobile.js","./share-store.js","./shell.css","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png"];
 self.addEventListener("install",event=>event.waitUntil(caches.open(cacheName).then(cache=>cache.addAll(shell.map(path=>new Request(new URL(path,self.registration.scope),{cache:"reload"})))).then(()=>self.skipWaiting())));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(names=>Promise.all(names.filter(name=>name.startsWith("comfy-mobile-shell-")&&name!==cacheName).map(name=>caches.delete(name)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",event=>{

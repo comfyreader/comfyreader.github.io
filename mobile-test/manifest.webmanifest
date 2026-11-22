@@ -1,13 +1,25 @@
 {
-  "id": "./",
+  "id": "/mobile-test/",
   "name": "Comfy Reader \u2014 Private test",
   "short_name": "Comfy test",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/mobile-test/",
+  "scope": "/mobile-test/",
   "display": "standalone",
   "background_color": "#f2eee4",
   "theme_color": "#2d7e83",
   "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "icon.svg",
       "sizes": "any",
@@ -16,7 +28,7 @@
     }
   ],
   "share_target": {
-    "action": "./share",
+    "action": "/mobile-test/share",
     "method": "POST",
     "enctype": "application/x-www-form-urlencoded",
     "params": {
