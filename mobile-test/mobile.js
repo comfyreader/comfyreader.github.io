@@ -31,7 +31,7 @@
   const response=await fetch(config.endpoint+"/storage/v1/object/authenticated/"+encodeURIComponent(config.bucket)+"/"+encodeURIComponent(config.object),{headers:{apikey:config.publicKey,Authorization:"Bearer "+token},cache:"no-store",credentials:"omit"});
   if(!response.ok)throw new Error(response.status===401?"Your sign-in expired. Please sign in again.":"This account does not have access to the private Comfy test.");
   report("Opening your private reader…");const bundle=await response.json();
-  if(bundle.version!=="0.1.0"||!bundle.files?.["page.html"])throw new Error("The private reader package is not supported.");
+  if(!["0.1.0","0.1.1"].includes(bundle.version)||!bundle.files?.["page.html"])throw new Error("The private reader package is not supported.");
   const decoded=new Map();
   for(const [name,file]of Object.entries(bundle.files)){
    const bytes=Uint8Array.from(atob(file.data),character=>character.charCodeAt(0));
@@ -48,6 +48,10 @@
   html=html.replace(/\b(src|href)="([^"]+)"/g,(match,attribute,path)=>urls[path]?`${attribute}="${urls[path]}"`:match);
   const bootstrap=URL.createObjectURL(new Blob(["window.comfyMobileAssets="+JSON.stringify(urls)+";"],{type:"text/javascript"}));assetUrls.push(bootstrap);
   html=html.replace("<head>",'<head><script src="'+bootstrap+'"></script>');
+  frame.onload=async()=>{
+   const id=sessionStorage.getItem("comfyMobilePendingShareV1");if(!id)return;
+   try{const shared=await comfyMobileShare("take",{id});sessionStorage.removeItem("comfyMobilePendingShareV1");if(shared)frame.contentWindow.postMessage({type:"COMFY_SHARED_TEXT",text:shared},location.origin);}catch(error){report(error.message);}
+  };
   frame.removeAttribute("src");frame.srcdoc=html;login.hidden=true;frame.hidden=false;document.getElementById("sessionBar").hidden=false;report("");
  }
  async function guarded(action){
@@ -70,8 +74,11 @@
  window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();installPrompt=event;document.getElementById("install").hidden=false;document.getElementById("installReader").hidden=false;});
  window.addEventListener("pagehide",()=>{try{frame.contentWindow?.speechSynthesis?.cancel();}catch(ignored){}});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&session&&!frame.hidden){void guarded(async()=>{const token=await accessToken();await authRequest("/auth/v1/user",undefined,token);});}});
+ if("serviceWorker"in navigator){navigator.serviceWorker.register("./sw.js",{scope:"./",updateViaCache:"none"}).catch(()=>report("Sharing setup is unavailable. You can still paste text into Comfy."));}
  void guarded(async()=>{
   const parameters=new URLSearchParams(location.search);const code=parameters.get("code");
+  const sharedId=parameters.get("share");
+  if(sharedId&&/^[0-9a-f-]{36}$/i.test(sharedId)){sessionStorage.setItem("comfyMobilePendingShareV1",sharedId);parameters.delete("share");history.replaceState(null,"",location.pathname+(parameters.size?"?"+parameters.toString():""));report("Shared text is saved on this device. Sign in to read it.");}
   if(code||parameters.has("error")){
    let pending=null;try{pending=JSON.parse(sessionStorage.getItem(pendingKey)||"null");}catch(ignored){}
    sessionStorage.removeItem(pendingKey);history.replaceState(null,"",location.pathname);
