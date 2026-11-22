@@ -28,10 +28,10 @@
  }
  async function loadReader(){
   report("Checking your access...");const token=await accessToken();await authRequest("/auth/v1/user",undefined,token);
-  const response=await fetch(config.endpoint+"/storage/v1/object/authenticated/"+encodeURIComponent(config.bucket)+"/"+encodeURIComponent(config.object)+"?v=0.1.6",{headers:{apikey:config.publicKey,Authorization:"Bearer "+token},cache:"no-store",credentials:"omit"});
+  const response=await fetch(config.endpoint+"/storage/v1/object/authenticated/"+encodeURIComponent(config.bucket)+"/"+encodeURIComponent(config.object)+"?v=0.1.7",{headers:{apikey:config.publicKey,Authorization:"Bearer "+token},cache:"no-store",credentials:"omit"});
   if(!response.ok)throw new Error(response.status===401?"Your sign-in expired. Please sign in again.":"This account does not have access to the private Comfy test.");
   report("Opening your private reader...");const bundle=await response.json();
-  if(!["0.1.0","0.1.1","0.1.2","0.1.3","0.1.4","0.1.5","0.1.6"].includes(bundle.version)||!bundle.files?.["page.html"])throw new Error("The private reader package is not supported.");
+  if(!["0.1.0","0.1.1","0.1.2","0.1.3","0.1.4","0.1.5","0.1.6","0.1.7"].includes(bundle.version)||!bundle.files?.["page.html"])throw new Error("The private reader package is not supported.");
   const decoded=new Map();
   for(const [name,file]of Object.entries(bundle.files)){
    const bytes=Uint8Array.from(atob(file.data),character=>character.charCodeAt(0));
