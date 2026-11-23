@@ -1,6 +1,6 @@
 {
   "id": "/mobile-test/",
-  "name": "Comfy Reader \u2014 Private test",
+  "name": "Comfy Reader — Private test",
   "short_name": "Comfy test",
   "start_url": "/mobile-test/",
   "scope": "/mobile-test/",
@@ -25,6 +25,12 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "sizes": "512x512",
+      "src": "icon-maskable-512.png",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "share_target": {
